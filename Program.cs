@@ -21,14 +21,13 @@ namespace cs330courses
             Console.WriteLine("---------");
 
             
-            // Make each of the next 6 sections of code work
-            /*
             List<Course> theList2 = service.getCourses();
             foreach(Course c in theList2) {
                 Console.WriteLine(c);
             }
             Console.WriteLine("---------");
-
+            
+            /*
             List<CourseOffering> theList3 = service.getCourseOfferingsBySemester("Fall 2020");
             foreach(CourseOffering c in theList3) {
                 Console.WriteLine(c);
