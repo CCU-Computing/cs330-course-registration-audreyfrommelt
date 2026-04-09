@@ -16,5 +16,12 @@ namespace cs330_proj1
         public int CompareTo(Course other) {
             return this.Name.CompareTo(other.Name);
         }
+        public override bool Equals(object obj)
+        {
+            Course c = obj as Course;
+
+            return !object.ReferenceEquals(null,c)
+            && string.Equals(Name, c.Name);
+        }
     }
 }
