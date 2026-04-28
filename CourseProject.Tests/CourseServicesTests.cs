@@ -94,6 +94,8 @@ public class CourseServicesTests
         //Add unit tests for GetOfferingsByGoalIdAndSemester_GoalIsFoundAndMultipleCourseOfferingsAreInSemester_OfferingsAreReturned()
         // Add unit test for GetOfferingsByGoalIdAndSemester_GoalIsFoundAndNoCourseOfferingIsInSemester_EmptyListIsReturned()
 
+
+        //user story 2
         [Fact]
 
         public void GetAllCourses_CoursesExist_ReturnsCourses()
@@ -118,6 +120,44 @@ public class CourseServicesTests
             var service = new CourseServices(mockRepository.Object);
 
             var result = service.getCourses();
+
+            Assert.Empty(result);
+        }
+
+
+        //user story 3
+        [Fact]
+        public void getCourseOfferingsBySemester_SemesterMatches_ReturnsMatches()
+        {
+            var mockRepository = new Mock<ICourseRepository>();
+            mockRepository.Setup(m => m.Courses).Returns(GetTestCourses());
+
+            mockRepository.Setup(m => m.Offerings).Returns(new List<CourseOffering>()
+            {
+                new CourseOffering(){Semester="Spring 2021", TheCourse=GetTestCourses().First()},
+                new CourseOffering(){Semester="Fall 2021", TheCourse=GetTestCourses().Last()}
+            });
+
+            var service = new CourseServices(mockRepository.Object);
+
+            var result = service.getCourseOfferingsBySemester("Spring 2021");
+
+            Assert.Single(result);
+            Assert.Equal("Spring 2021", result.First().Semester);
+        }
+
+        [Fact]
+        public void getCourseOfferingsBySemester_NoMatches_ReturnsNoMatches()
+        {
+            var mockRepository = new Mock<ICourseRepository>();
+            mockRepository.Setup(m => m.Courses).Returns(GetTestCourses());
+
+            mockRepository.Setup(m => m.Offerings).Returns(new List<CourseOffering>());
+       
+
+            var service = new CourseServices(mockRepository.Object);
+
+            var result = service.getCourseOfferingsBySemester("Winter 2030");
 
             Assert.Empty(result);
         }
