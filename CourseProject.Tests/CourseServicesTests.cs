@@ -161,6 +161,46 @@ public class CourseServicesTests
 
             Assert.Empty(result);
         }
+
+        //user story 4
+        [Fact]
+        public void getCourseOfferingsBySemesterAndDept_SemesterAndDeptMatches_ReturnsMatches()
+        {
+            var courses = GetTestCourses();
+
+            var mockRepository = new Mock<ICourseRepository>();
+
+            mockRepository.Setup(m => m.Courses).Returns(courses);
+
+            mockRepository.Setup(m => m.Offerings).Returns(new List<CourseOffering>()
+            {
+                new CourseOffering(){Semester="Spring 2021", TheCourse=courses[0]},
+                new CourseOffering(){Semester="Spring 2021", TheCourse=courses[1]}   
+            });
+       
+
+            var service = new CourseServices(mockRepository.Object);
+
+            var result = service.getCourseOfferingsBySemesterAndDept("Spring 2021", "ARTD");
+
+            Assert.Single(result);
+            Assert.Equal("ARTD 201", result.First().TheCourse.Name);
+        }
+
+        [Fact]
+        public void getCourseOfferingsBySemesterAndDept_NoMatch_ReturnsEmpty()
+        {
+            var mockRepository = new Mock<ICourseRepository>();
+
+            mockRepository.Setup(m => m.Offerings).Returns(new List<CourseOffering>());
+       
+
+            var service = new CourseServices(mockRepository.Object);
+
+            var result = service.getCourseOfferingsBySemesterAndDept("Spring 2021", "BIO");
+
+            Assert.Empty(result);
+        }
         private List<Course> GetTestCourses()
         {
             return new List<Course>(){
