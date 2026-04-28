@@ -5,7 +5,14 @@ namespace cs330_proj1
 {
     public class CourseServices
     {
-        private CourseRepository repo = new CourseRepository();
+        //private CourseRepository repo = new CourseRepository();
+
+        private readonly ICourseRepository _repo;
+
+        public CourseServices(ICourseRepository courseRepo)
+      {
+         _repo=courseRepo;
+      }
 
 
         //As a student, I want to search for course offerings that meet core goals 
